@@ -7,9 +7,20 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-mem0ai = "^0.0.9"
-uvicorn = "^0.30.3"
+fastapi = "^0.112.1"
+poetry-plugin-dotenv = "^2.2.3"
+mem0ai = "^0.0.20"
+typenv = "^0.2.0"
 
+[tool.poetry.plugins.dotenv]
+ignore = "false"
+location = ".env"
+
+
+[[tool.poetry.source]]
+name = "mirrors"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+priority = "primary"
 
 [build-system]
 requires = ["poetry-core"]

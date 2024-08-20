@@ -1,7 +1,4 @@
-import logging
-
 import uvicorn
-import dotenv
 
 from fastapi import FastAPI, APIRouter, Depends, status
 from fastapi.responses import JSONResponse
@@ -16,8 +13,8 @@ from errors.exception import UnauthorizedException
 from errors.handler import unauthorized_exception_handler, qdrant_client_unexpected_handler
 from qdrant_client.http.exceptions import UnexpectedResponse
 
-dotenv.load_dotenv()
 env = Env()
+env.read_env()
 
 mem0 = Memory.from_config({
     "vector_store": vector_config,
@@ -201,7 +198,7 @@ async def reset_all_memories(token=Depends(authorize)):
     mem0.reset()
     return JSONResponse(
         content=SuccessfulResponse().model_dump_json(),
-        status_code=204
+        status_code=status.HTTP_202_ACCEPTED
     )
 
 
