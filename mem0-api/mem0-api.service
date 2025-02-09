@@ -1,0 +1,36 @@
+[Unit]
+Description=Mem0 AI API Service (Project Virtualenv)
+After=network.target
+
+[Service]
+# Use virtualenv user (ensure directory permissions)
+User=root
+Group=root
+WorkingDirectory=/www/server/mem0-dify/mem0-api
+
+# Directly use Python interpreter from virtualenv
+ExecStart=/www/server/mem0-dify/mem0-api/.venv/bin/python app.py
+
+# Environment variable configuration
+Environment="PATH=/www/server/mem0-dify/mem0-api/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+Environment="PYTHONPATH=/www/server/mem0-dify/mem0-api"
+Environment="PYTHONUNBUFFERED=1"
+
+# Auto restart configuration
+Restart=always
+RestartSec=3
+StartLimitInterval=60s
+StartLimitBurst=10
+
+# Log configuration
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=mem0-api
+
+# Security configuration (adapted for virtualenv)
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target

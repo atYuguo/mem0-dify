@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "Mem0-Dify"
+version = "0.1.0"
+description = ""
+authors = ["Yuis <youhongkai.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+fastapi = "^0.112.1"
+poetry-plugin-dotenv = "^2.2.3"
+mem0ai = "^0.1.48"
+typenv = "^0.2.0"
+uvicorn = "^0.34.0"
+sentence-transformers = "^2.2.2"
+qdrant-client = "^1.13.2"
+
+[tool.poetry.plugins.dotenv]
+ignore = "false"
+location = ".env"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

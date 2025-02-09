@@ -1,2 +1,9 @@
-.env
-.idea
+*.env
+*.env.local
+*.idea
+*.venv
+*.cache
+*.DS_Store
+*.git
+*.gitignore
+*__pycache__

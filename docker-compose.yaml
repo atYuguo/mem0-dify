@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  mem0-qdrant:
+    image: qdrant/qdrant
+    container_name: mem0-qdrant
+    restart: always
+    ports:
+      # port 6333 for the REST API and dashboard, and port 6334 for the gRPC API
+      - "${VECTOR_STORE_DB_PORT}:6333"
+    environment:
+      - QDRANT__SERVICE__API_KEY=${VECTOR_STORE_DB_API_KEY}
+    volumes:
+      - ./db/qdrant/data:/qdrant/storage
+      - ./db/qdrant/snapshots:/qdrant/snapshots
+    networks:
+      - ${NETWORK}
+
+  mem0-api:
+    build:
+      context: .
+      dockerfile: mem0-api/Dockerfile
+    container_name: mem0-api
+    restart: always
+    ports:
+      - "${MEM0_API_PORT}:8000"
+    environment:
+      - HF_ENDPOINT=${HF_ENDPOINT}
+      - HF_HOME=/root/huggingface/
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - DEEPSEEK_MODEL=${DEEPSEEK_MODEL}
+      - VECTOR_STORE_PROVIDER=${VECTOR_STORE_PROVIDER}
+      - VECTOR_STORE_DB_HOST=${VECTOR_STORE_DB_HOST}
+      - VECTOR_STORE_DB_PORT=${VECTOR_STORE_DB_PORT}
+      - VECTOR_STORE_DB_API_KEY=${VECTOR_STORE_DB_API_KEY}
+      - VECTOR_STORE_EMBEDDING_MODEL_DIMS=${VECTOR_STORE_EMBEDDING_MODEL_DIMS}
+      - VECTOR_STORE_COLLECTION_NAME=${VECTOR_STORE_COLLECTION_NAME}
+      - MEM0_API_AUTH_KEY=${MEM0_API_AUTH_KEY}
+      - MEM0_API_HOST=${MEM0_API_HOST}
+      - MEM0_API_PORT=${MEM0_API_PORT}
+    depends_on:
+      - ${VECTOR_STORE_DB_HOST}
+    volumes:
+      - ./mem0-api/.cache:/root/.cache
+    networks:
+      - ${NETWORK}
+
+networks:
+  ${NETWORK}:
+    name: ${NETWORK}
