@@ -22,6 +22,8 @@ services:
     restart: always
     # ports:
     #   - "${GRAPH_STORE_DB_PORT}:7687"
+    volumes:
+      - ./db/neo4j/data:/data
     environment:
       - NEO4J_AUTH=${GRAPH_STORE_DB_USERNAME}/${GRAPH_STORE_DB_PASSWORD}
     networks:
@@ -29,12 +31,14 @@ services:
 
   mem0-api:
     build:
-      context: .
-      dockerfile: mem0-api/Dockerfile
+      context: ./mem0-api
+      dockerfile: Dockerfile
     container_name: mem0-api
     restart: always
     ports:
       - "${MEM0_API_PORT}:8000"
+    env_file:
+      - .env
     environment:
       - HF_ENDPOINT=${HF_ENDPOINT}
       - HF_HOME=/root/huggingface/
@@ -63,6 +67,7 @@ services:
     depends_on:
       - ${VECTOR_STORE_DB_HOST}
     volumes:
+      - ./.env:/mem0-api/.env
       - ./mem0-api/.cache:/root/.cache
     networks:
       - ${NETWORK}
