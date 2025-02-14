@@ -72,7 +72,7 @@ def authorized(token=Depends(authorize)):
 async def store_memory(data: StoreMemoryData, token=Depends(authorize)):
     mem0 = get_mem0()
     execute_results = mem0.add(
-        messages=data.data,
+        data.data,
         user_id=data.user_id,
         agent_id=data.agent_id,
         run_id=data.run_id,

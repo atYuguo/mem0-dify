@@ -19,7 +19,6 @@ vector_config = {
 }
 
 graph_config = {
-    "graph_store": {
         "provider": "neo4j",
         "config": {
             "url": f"neo4j://{env.str(name='GRAPH_STORE_DB_HOST')}:{env.str(name='GRAPH_STORE_DB_PORT')}",
@@ -33,7 +32,6 @@ graph_config = {
                 "temperature": env.float(name="GRAPH_STORE_LLM_TEMPERATURE", default=0.0),
             }
         }
-    }
 }
 
 llm_config = LlmConfig(

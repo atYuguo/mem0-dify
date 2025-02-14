@@ -10,7 +10,7 @@ package-mode = false
 python = ">=3.10,<4.0"
 fastapi = "^0.112.1"
 poetry-plugin-dotenv = "^2.2.3"
-mem0ai = "^0.1.48"
+mem0ai = {version = "^0.1.48", extras = ["graph"]}
 typenv = "^0.2.0"
 uvicorn = "^0.34.0"
 sentence-transformers = "^2.2.2"

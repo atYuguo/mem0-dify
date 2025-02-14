@@ -24,8 +24,13 @@ services:
     #   - "${GRAPH_STORE_DB_PORT}:7687"
     volumes:
       - ./db/neo4j/data:/data
+      - ./db/neo4j/plugins:/plugins
     environment:
       - NEO4J_AUTH=${GRAPH_STORE_DB_USERNAME}/${GRAPH_STORE_DB_PASSWORD}
+      - NEO4J_apoc_export_file_enabled=true
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_apoc_import_file_use__neo4j__config=true
+      - NEO4J_PLUGINS=["apoc"]
     networks:
       - ${NETWORK}
 
