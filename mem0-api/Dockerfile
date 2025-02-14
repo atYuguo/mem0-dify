@@ -26,4 +26,4 @@ COPY . .
 EXPOSE ${MEM0_API_PORT}
 
 # Run the application
-CMD ["poetry", "run", "uvicorn", "app:app"]
+CMD ["poetry", "run", "uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
