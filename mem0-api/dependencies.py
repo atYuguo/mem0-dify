@@ -6,7 +6,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from typing import List, Optional
 from typing_extensions import TypedDict
 from mem0 import Memory
-from mem0_config import vector_config, llm_config, embedding_config
+from mem0_config import vector_config, llm_config, embedding_config, graph_config
 from errors.exception import UnauthorizedException, DatabaseConnectionError
 from qdrant_client.http.exceptions import ResponseHandlingException
 
@@ -31,7 +31,9 @@ def get_mem0():
             _mem0 = Memory.from_config({
                 "vector_store": vector_config,
                 "llm": llm_config,
-                "embedder": embedding_config
+                "embedder": embedding_config,
+                "graph_store": graph_config,
+                "version": "v1.1"
             })
         except ResponseHandlingException as e:
             if "timed out" in str(e):

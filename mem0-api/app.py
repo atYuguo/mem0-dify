@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 from typing import Dict, Union, List
 from dependencies import get_memory_id, MemoryHistory, authorize, get_mem0
 from response import SuccessfulResponse, ErrorResponse
-from mem0_config import vector_config, llm_config, embedding_config
+from mem0_config import vector_config, llm_config, embedding_config, graph_config
 from errors.exception import UnauthorizedException, DatabaseConnectionError
 from errors.handler import (
     unauthorized_exception_handler, 

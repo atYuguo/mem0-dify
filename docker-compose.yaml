@@ -1,18 +1,29 @@
 version: '3.8'
-
+name: mem0-api
 services:
   mem0-qdrant:
     image: qdrant/qdrant
     container_name: mem0-qdrant
     restart: always
-    ports:
-      # port 6333 for the REST API and dashboard, and port 6334 for the gRPC API
-      - "${VECTOR_STORE_DB_PORT}:6333"
+    # ports:
+    #   # port 6333 for the REST API and dashboard, and port 6334 for the gRPC API
+    #   - "${VECTOR_STORE_DB_PORT}:6333"
     environment:
       - QDRANT__SERVICE__API_KEY=${VECTOR_STORE_DB_API_KEY}
     volumes:
       - ./db/qdrant/data:/qdrant/storage
       - ./db/qdrant/snapshots:/qdrant/snapshots
+    networks:
+      - ${NETWORK}
+
+  mem0-neo4j:
+    image: neo4j:latest
+    container_name: mem0-neo4j
+    restart: always
+    # ports:
+    #   - "${GRAPH_STORE_DB_PORT}:7687"
+    environment:
+      - NEO4J_AUTH=${GRAPH_STORE_DB_USERNAME}/${GRAPH_STORE_DB_PASSWORD}
     networks:
       - ${NETWORK}
 
@@ -35,11 +46,20 @@ services:
       - VECTOR_STORE_DB_HOST=${VECTOR_STORE_DB_HOST}
       - VECTOR_STORE_DB_PORT=${VECTOR_STORE_DB_PORT}
       - VECTOR_STORE_DB_API_KEY=${VECTOR_STORE_DB_API_KEY}
+      - VECTOR_STORE_EMBEDDING_PROVIDER=${VECTOR_STORE_EMBEDDING_PROVIDER}
+      - VECTOR_STORE_EMBEDDING_MODEL=${VECTOR_STORE_EMBEDDING_MODEL}
       - VECTOR_STORE_EMBEDDING_MODEL_DIMS=${VECTOR_STORE_EMBEDDING_MODEL_DIMS}
       - VECTOR_STORE_COLLECTION_NAME=${VECTOR_STORE_COLLECTION_NAME}
       - MEM0_API_AUTH_KEY=${MEM0_API_AUTH_KEY}
       - MEM0_API_HOST=${MEM0_API_HOST}
       - MEM0_API_PORT=${MEM0_API_PORT}
+      - GRAPH_STORE_DB_HOST=${GRAPH_STORE_DB_HOST}
+      - GRAPH_STORE_DB_PORT=${GRAPH_STORE_DB_PORT}
+      - GRAPH_STORE_DB_USERNAME=${GRAPH_STORE_DB_USERNAME}
+      - GRAPH_STORE_DB_PASSWORD=${GRAPH_STORE_DB_PASSWORD}
+      - GRAPH_STORE_LLM_PROVIDER=${GRAPH_STORE_LLM_PROVIDER}
+      - GRAPH_STORE_LLM_MODEL=${GRAPH_STORE_LLM_MODEL}
+      - GRAPH_STORE_LLM_TEMPERATURE=${GRAPH_STORE_LLM_TEMPERATURE}
     depends_on:
       - ${VECTOR_STORE_DB_HOST}
     volumes:
